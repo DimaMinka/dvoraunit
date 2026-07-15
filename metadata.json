@@ -1,0 +1,6 @@
+{
+  "name": "Tactical Operations Interface",
+  "description": "Elite military operations tactical HUD featuring grid-underlays, system offline diagnostics, hacking bypass minigames, a scanning sweeping radar, and secure tactical uplink to Special Operations Command.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
