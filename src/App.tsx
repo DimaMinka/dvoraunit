@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import RadarCanvas from "./components/RadarCanvas";
 import DecryptMinigame from "./components/DecryptMinigame";
+import DvoraLogo from "./components/DvoraLogo";
 import { TerminalMessage, SubsystemInfo, RadarTarget, SubUnitState } from "./types";
 
 // Static constant data for initial targets
@@ -329,8 +330,7 @@ export default function App() {
 
               {/* Main Card */}
               <div 
-                onClick={() => setViewState("dashboard")}
-                className="border border-brand-steel/60 bg-[#161616]/90 p-8 md:p-12 text-center shadow-2xl relative cursor-pointer hover:border-brand-primary/40 transition-all group"
+                className="border border-brand-steel/60 bg-[#161616]/90 p-8 md:p-12 text-center shadow-2xl relative"
               >
                 
                 {/* Upper Status Pill */}
@@ -339,21 +339,36 @@ export default function App() {
                   STATUS: SYSTEM UPDATE IN PROGRESS
                 </div>
 
+                {/* DVORA logo */}
+                <DvoraLogo className="w-44 h-44 mx-auto mb-6" />
+
                 {/* Primary Displays */}
-                <h1 className="font-display text-4xl md:text-5xl font-bold text-brand-primary tracking-tight leading-none mb-4 uppercase group-hover:text-white transition-colors">
+                <h1 className="font-display text-4xl md:text-5xl font-bold text-brand-primary tracking-tight leading-none mb-4 uppercase">
                   DVORA UNIT SYSTEM
                 </h1>
-                <h2 className="font-display text-3xl md:text-4xl font-semibold text-brand-primary tracking-widest leading-none uppercase mb-8 group-hover:text-white transition-colors">
+                <h2 className="font-display text-3xl md:text-4xl font-semibold text-brand-primary tracking-widest leading-none uppercase mb-8">
                   OFFLINE
                 </h2>
 
                 {/* Divider Line */}
-                <div className="w-24 h-0.5 bg-brand-steel/50 mx-auto mb-8 group-hover:bg-brand-primary transition-colors" />
+                <div className="w-24 h-0.5 bg-brand-steel/50 mx-auto mb-8" />
 
                 {/* Tactical Description Paragraph */}
                 <p className="max-w-md mx-auto font-sans text-sm text-brand-secondary leading-relaxed">
                   Our digital operations center is currently undergoing scheduled maintenance and strategic upgrades. We will be back online shortly to continue our primary directives.
                 </p>
+
+                {/* Support Contact */}
+                <div className="mt-8 font-mono text-[10px] tracking-wider text-brand-steel">
+                  SECURE HELPDESK UPLINK:{" "}
+                  <a 
+                    href="mailto:support@dvoraunit.com" 
+                    onClick={(e) => e.stopPropagation()} 
+                    className="text-brand-primary hover:text-white underline decoration-brand-primary/30 hover:decoration-white transition-all font-bold"
+                  >
+                    support@dvoraunit.com
+                  </a>
+                </div>
               </div>
 
             </div>
