@@ -4,49 +4,49 @@
 [![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-**Официальный тактический интерфейс управления и командного центра спецподразделения DVORA.**  
-Данный веб-интерфейс в реальном времени отображает статус системы, координаты терминала и обеспечивает защищенный шлюз связи. На текущий момент развернут заглавный заглушечный экран планового обслуживания (Maint Block).
+**The official tactical command interface and operations center for DVORA UNIT.**  
+This web-based HUD interface displays real-time system status, terminal coordinates, and provides a secure communications uplink. Currently deployed as a scheduled maintenance landing page (Maint Block).
 
 ---
 
-## 🛠 Технологический стек (Tech Stack)
+## 🛠 Tech Stack
 
-* **Фреймворк:** React 18+ с использованием сверхбыстрого сборщика Vite.
-* **Стилизация:** Tailwind CSS 4.0, обеспечивающий высокотехнологичный киберпанк/военный дизайн (HUD Grid, Scanlines, уголковые маркеры, кастомные анимации).
-* **Иконки:** Векторный пак `lucide-react` (Radio, Wifi, Satellite).
-* **Деплой:** Полностью автоматизированный CI/CD пайплайн на основе GitHub Actions (`deploy.yml`) для сборки и публикации в GitHub Pages с поддержкой SPA-роутинга и кастомного домена.
-
----
-
-## 🧭 Ключевые возможности интерфейса
-
-1. **Милитари-эстетика (Tactical HUD):** Уникальный дизайн с сетчатым фоном, эффектом мерцающих линий (scanlines) и динамическими L-образными рамками.
-2. **Динамические системные часы:** Часы синхронизируются в реальном времени с точным системным временем.
-3. **Фирменный векторный логотип:** Уникальный кастомный SVG-логотип в виде механизированной киберосы (DVORA) со встроенными трафаретными надписями.
-4. **Оптимизация для GitHub Pages:** Поддержка кастомного домена (`www.dvoraunit.com`) через сохранение CNAME в выходной директории, отключение Jekyll-обработки (`.nojekyll`) и SPA-фоллбек (`404.html`).
+* **Framework:** React 18+ powered by Vite for instant builds and performance.
+* **Styling:** Tailwind CSS 4.0, delivering a high-fidelity cyberpunk/tactical HUD theme (integrated grid backdrop, scanlines effect, L-bracket corner markers, and smooth CSS animations).
+* **Icons:** `lucide-react` vector icon pack (Radio, Wifi, Satellite).
+* **Deployment:** Fully automated CI/CD pipeline via GitHub Actions (`deploy.yml`) for building, configuring, and publishing directly to GitHub Pages with SPA routing support and custom domain mapping.
 
 ---
 
-## 🚀 Настройка и локальный запуск
+## 🧭 Interface Highlights
 
-### Локальный запуск
+1. **Tactical HUD Aesthetics:** Immersive visual theme featuring a scanline overlay, vector grids, glowing status beacons, and sharp retro-futuristic styling.
+2. **Dynamic System Clock:** Accurate real-time system clock synchronized in the client header and footer panels.
+3. **Custom Vector Logo:** A uniquely crafted SVG graphic representing the cybernetic DVORA logo, complete with high-tech stencil typography.
+4. **Optimized for GitHub Pages:** Comprehensive configurations including custom root domain tracking (`www.dvoraunit.com`) via a CNAME record, Jekyll processing bypass (`.nojekyll`), and standard SPA routing support (`404.html` fallback).
 
-1. Установите зависимости:
+---
+
+## 🚀 Quick Start & Development
+
+### Local Development
+
+1. Install project dependencies:
    ```bash
    npm install
    ```
-2. Запустите сервер разработки:
+2. Launch the local development server:
    ```bash
    npm run dev
    ```
 
-### Деплой на GitHub Pages (CI/CD)
+### Deployment to GitHub Pages (CI/CD)
 
-При пуше в ветку `main` или `master`, GitHub Actions автоматически запускает пайплайн:
-* Собирает статические файлы через `npm run build` в директорию `dist/`.
-* Копирует `index.html` в `404.html` для обхода ограничений SPA на GitHub Pages.
-* Создает маркер `.nojekyll` для корректной работы путей статических ассетов.
-* Загружает собранные файлы на GitHub Pages с автоматической привязкой домена `www.dvoraunit.com`.
+Pushing changes to either the `main` or `master` branches triggers the automated GitHub workflow:
+* Compiles production assets using `npm run build` into the output directory `dist/`.
+* Creates a duplicate of `index.html` as `404.html` to prevent routing errors in SPA setups.
+* Adds a `.nojekyll` file to allow proper loading of files starting with underscores.
+* Publishes compiled assets to your GitHub Pages hosting instance, mapped directly to `www.dvoraunit.com`.
 
 ---
 
