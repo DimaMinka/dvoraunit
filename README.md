@@ -1,20 +1,53 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# 📟 DVORA // COMMAND INTERFACE
 
-# Run and deploy your AI Studio app
+[![Vite](https://img.shields.io/badge/Vite-6495ED?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-This contains everything you need to run your app locally.
+**Официальный тактический интерфейс управления и командного центра спецподразделения DVORA.**  
+Данный веб-интерфейс в реальном времени отображает статус системы, координаты терминала и обеспечивает защищенный шлюз связи. На текущий момент развернут заглавный заглушечный экран планового обслуживания (Maint Block).
 
-View your app in AI Studio: https://ai.studio/apps/76a818d0-741b-453c-aa5a-eb3e709cad27
+---
 
-## Run Locally
+## 🛠 Технологический стек (Tech Stack)
 
-**Prerequisites:**  Node.js
+* **Фреймворк:** React 18+ с использованием сверхбыстрого сборщика Vite.
+* **Стилизация:** Tailwind CSS 4.0, обеспечивающий высокотехнологичный киберпанк/военный дизайн (HUD Grid, Scanlines, уголковые маркеры, кастомные анимации).
+* **Иконки:** Векторный пак `lucide-react` (Radio, Wifi, Satellite).
+* **Деплой:** Полностью автоматизированный CI/CD пайплайн на основе GitHub Actions (`deploy.yml`) для сборки и публикации в GitHub Pages с поддержкой SPA-роутинга и кастомного домена.
 
+---
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 🧭 Ключевые возможности интерфейса
+
+1. **Милитари-эстетика (Tactical HUD):** Уникальный дизайн с сетчатым фоном, эффектом мерцающих линий (scanlines) и динамическими L-образными рамками.
+2. **Динамические системные часы:** Часы синхронизируются в реальном времени с точным системным временем.
+3. **Фирменный векторный логотип:** Уникальный кастомный SVG-логотип в виде механизированной киберосы (DVORA) со встроенными трафаретными надписями.
+4. **Оптимизация для GitHub Pages:** Поддержка кастомного домена (`www.dvoraunit.com`) через сохранение CNAME в выходной директории, отключение Jekyll-обработки (`.nojekyll`) и SPA-фоллбек (`404.html`).
+
+---
+
+## 🚀 Настройка и локальный запуск
+
+### Локальный запуск
+
+1. Установите зависимости:
+   ```bash
+   npm install
+   ```
+2. Запустите сервер разработки:
+   ```bash
+   npm run dev
+   ```
+
+### Деплой на GitHub Pages (CI/CD)
+
+При пуше в ветку `main` или `master`, GitHub Actions автоматически запускает пайплайн:
+* Собирает статические файлы через `npm run build` в директорию `dist/`.
+* Копирует `index.html` в `404.html` для обхода ограничений SPA на GitHub Pages.
+* Создает маркер `.nojekyll` для корректной работы путей статических ассетов.
+* Загружает собранные файлы на GitHub Pages с автоматической привязкой домена `www.dvoraunit.com`.
+
+---
+
+*Secure Uplink Stable. For Authorized Use Only.*
