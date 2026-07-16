@@ -4,10 +4,10 @@ import {
   Wifi, 
   Satellite 
 } from "lucide-react";
-import DvoraLogo from "./components/DvoraLogo";
 
 export default function App() {
   const [sysTime, setSysTime] = useState("");
+  const [useFallback, setUseFallback] = useState(false);
 
   // Sync real-time clock to exactly match formatting in bottom left
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function App() {
 
             {/* Main Card */}
             <div 
-              className="border border-brand-steel/60 bg-[#161616]/90 p-8 md:p-12 text-center shadow-2xl relative"
+              className="border border-brand-steel/60 bg-[#1A1A19] p-8 md:p-12 text-center shadow-2xl relative"
             >
               
               {/* Upper Status Pill */}
@@ -90,7 +90,31 @@ export default function App() {
               </div>
 
               {/* DVORA logo */}
-              <DvoraLogo className="w-44 h-44 mx-auto mb-6" />
+              {!useFallback ? (
+                <img 
+                  src="/logo.svg" 
+                  alt="DVORA UNIT Logo" 
+                  className="w-44 h-44 mx-auto mb-6 object-contain"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src.endsWith('/logo.svg')) {
+                      // Try fallback to PNG
+                      target.src = '/logo.png';
+                    } else {
+                      // If both are missing, switch to elegant text fallback
+                      setUseFallback(true);
+                    }
+                  }}
+                />
+              ) : (
+                <div 
+                  id="logo_fallback" 
+                  className="w-44 h-44 mx-auto mb-6 flex flex-col items-center justify-center border border-brand-primary/40 bg-brand-primary/10 rounded-full text-brand-primary font-mono font-bold text-3xl tracking-widest animate-pulse"
+                >
+                  <Radio className="w-8 h-8 mb-2 text-brand-primary" />
+                  DVORA
+                </div>
+              )}
 
               {/* Primary Displays */}
               <h1 className="font-display text-4xl md:text-5xl font-bold text-brand-primary tracking-tight leading-none mb-4 uppercase">
