@@ -171,7 +171,7 @@ export const DEFAULT_TASKS: DynamicTask[] = [
     phase: 'prep',
     tag: 'VEHICLE_PREFLIGHT',
     title: TASK_TRANSLATIONS.personal_car_check.en.title,
-    minutes: 10,
+    minutes: 5,
     enabled: true,
     description: TASK_TRANSLATIONS.personal_car_check.en.description,
   },
@@ -200,13 +200,13 @@ export const DEFAULT_TASKS: DynamicTask[] = [
     phase: 'morning',
     tag: 'WAKE_PROTOCOL',
     title: TASK_TRANSLATIONS.morning_hygiene.en.title,
-    minutes: 20,
+    minutes: 5,
     enabled: true,
     description: TASK_TRANSLATIONS.morning_hygiene.en.description,
   },
 ];
 
-export const STORAGE_KEY = 'dvora_mission_prep_v1';
+export const STORAGE_KEY = 'dvora_mission_prep_v2';
 export const LANG_STORAGE_KEY = 'dvora_prep_lang_v1';
 
 export function loadSavedLang(): Lang {
