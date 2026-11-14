@@ -4,10 +4,49 @@ import {
   Wifi, 
   Satellite 
 } from "lucide-react";
+import MissionPrepPage from "./pages/MissionPrepPage";
 
 export default function App() {
   const [sysTime, setSysTime] = useState("");
   const [useFallback, setUseFallback] = useState(false);
+  const [currentPath, setCurrentPath] = useState<string>(() => {
+    if (typeof window === "undefined") return "/";
+    const path = window.location.pathname;
+    const hash = window.location.hash;
+    if (path.includes("/prep") || hash.includes("/prep")) {
+      return "/prep";
+    }
+    return "/";
+  });
+
+  // Handle browser popstate / back / forward navigation
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      if (path.includes("/prep") || hash.includes("/prep")) {
+        setCurrentPath("/prep");
+      } else {
+        setCurrentPath("/");
+      }
+    };
+
+    window.addEventListener("popstate", handleLocationChange);
+    window.addEventListener("hashchange", handleLocationChange);
+    return () => {
+      window.removeEventListener("popstate", handleLocationChange);
+      window.removeEventListener("hashchange", handleLocationChange);
+    };
+  }, []);
+
+  const navigateTo = (path: string) => {
+    setCurrentPath(path);
+    try {
+      window.history.pushState({}, "", path);
+    } catch {
+      window.location.hash = path;
+    }
+  };
 
   // Sync real-time clock to exactly match formatting in bottom left
   useEffect(() => {
@@ -20,6 +59,11 @@ export default function App() {
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  // If on /prep, render MissionPrepPage
+  if (currentPath === "/prep") {
+    return <MissionPrepPage onBackToMain={() => navigateTo("/")} />;
+  }
 
   return (
     <div id="tactical_ops_interface" className="scanlines grid-backdrop min-h-screen bg-[#121212] flex flex-col justify-between text-[#e5e2e1] relative selection:bg-brand-primary selection:text-black">
@@ -34,7 +78,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Action center / current mode tag */}
+        {/* Action center / current mode tag - covert entry to /prep */}
         <div className="flex items-center gap-4 text-xs font-mono">
           <div className="hidden md:flex gap-3 text-brand-steel">
             <span className="flex items-center gap-1">
@@ -48,9 +92,13 @@ export default function App() {
             </span>
           </div>
 
-          <span className="bg-brand-primary/10 border border-brand-primary/40 px-2 py-0.5 text-brand-primary uppercase text-[10px] font-bold">
+          <button
+            onClick={() => navigateTo("/prep")}
+            title="Запуск калькулятора подготовки к заданию"
+            className="bg-brand-primary/10 border border-brand-primary/40 px-2 py-0.5 text-brand-primary uppercase text-[10px] font-bold cursor-pointer hover:bg-brand-primary hover:text-black transition-all"
+          >
             MAINT_BLOCK
-          </span>
+          </button>
         </div>
       </header>
 
@@ -73,10 +121,13 @@ export default function App() {
               34.0522° N, 118.2437° W
             </span>
 
-            {/* Version label bottom left */}
-            <span className="absolute -bottom-3.5 left-1 font-mono text-[10px] text-brand-steel">
+            {/* Version label bottom left - also clickable covert entry */}
+            <button
+              onClick={() => navigateTo("/prep")}
+              className="absolute -bottom-3.5 left-1 font-mono text-[10px] text-brand-steel hover:text-brand-primary cursor-pointer transition-colors"
+            >
               VER_8.0.4.X_STABLE
-            </span>
+            </button>
 
             {/* Main Card */}
             <div 
