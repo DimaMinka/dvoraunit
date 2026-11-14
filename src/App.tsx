@@ -94,7 +94,7 @@ export default function App() {
 
           <button
             onClick={() => navigateTo("/prep")}
-            title="Запуск калькулятора подготовки к заданию"
+            title="Launch Mission Prep Calculator"
             className="bg-brand-primary/10 border border-brand-primary/40 px-2 py-0.5 text-brand-primary uppercase text-[10px] font-bold cursor-pointer hover:bg-brand-primary hover:text-black transition-all"
           >
             MAINT_BLOCK
