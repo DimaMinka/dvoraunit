@@ -47,6 +47,7 @@ const UI_TEXT: Record<
     badge: string;
     pageTitle: string;
     pageSub: string;
+    donateNotice: string;
     tabOperator: string;
     tabVideo: string;
     tabField: string;
@@ -92,6 +93,8 @@ const UI_TEXT: Record<
     badge: 'UNIT_PATCH_V1 // IN STOCK',
     pageTitle: 'TACTICAL PATCH REQUISITION',
     pageSub: 'Embroidered velcro patch. Volume pricing applies automatically.',
+    donateNotice:
+      'DONATE FOR THE UNIT // Independent initiative supporting DVORA UNIT & local production in the North.',
     tabOperator: 'ACTION',
     tabField: 'RIG',
     tabCloseup: 'MACRO',
@@ -136,6 +139,8 @@ const UI_TEXT: Record<
     badge: 'UNIT_PATCH_V1 // В НАЛИЧИИ',
     pageTitle: 'ЗАКАЗ ТАКТИЧЕСКИХ ПАТЧЕЙ',
     pageSub: 'Вышитый патч на велкро. Оптовая цена считается автоматически.',
+    donateNotice:
+      'ПОДДЕРЖКА ПОДРАЗДЕЛЕНИЯ // Независимая инициатива в поддержку DVORA UNIT и производства на Севере.',
     tabOperator: 'В ПОЛЕ',
     tabField: 'ПЛИТНИК',
     tabCloseup: 'КРУПНО',
@@ -315,6 +320,9 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
               {t.pageTitle}
             </h1>
             <p className="text-xs text-brand-secondary mt-1">{t.pageSub}</p>
+            <div className="mt-2.5 border-l-2 border-brand-primary bg-brand-primary/5 px-2.5 py-1.5 font-mono text-[10px] leading-relaxed text-brand-secondary">
+              {t.donateNotice}
+            </div>
           </div>
 
           {/* Media Frame with L-Brackets */}
@@ -500,6 +508,9 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
               {t.pageTitle}
             </h1>
             <p className="text-sm text-brand-secondary mt-1">{t.pageSub}</p>
+            <div className="mt-3 border-l-2 border-brand-primary bg-brand-primary/5 px-3 py-2 font-mono text-[11px] leading-relaxed text-brand-secondary">
+              {t.donateNotice}
+            </div>
           </div>
 
           {/* 01 // Loadout Mode (Upsell) */}
