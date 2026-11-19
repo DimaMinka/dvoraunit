@@ -27,6 +27,24 @@ This web-based HUD interface displays real-time system status, terminal coordina
 
 ---
 
+## ⏱ Mission Prep Calculator (`/prep`)
+
+An integrated reverse-time deployment planner designed to calculate exact wake-up, prep, and departure timings working backwards from a target on-base arrival time (e.g., `07:15`).
+
+### Key Features
+* **Reverse Calculation HUD:** Instantly displays 4 key checkpoints — **Wake Up & Alarm**, **Prep Start**, **Departure**, and **Base Arrival** — including automatic previous-day (`-1 day`) handling for early-morning missions.
+* **4-Phase Dynamic Stage Configurator:**
+  * `PHASE_04 // ON_BASE_BUFFER`: Pre-mission checks on site (radio & comms sync, fleet vehicle inspection).
+  * `PHASE_03 // TRANSIT_VECTOR`: Route duration with a strict **20-minute minimum** and quick traffic presets (`20m`–`60m`).
+  * `PHASE_02 // PRE_DEPARTURE & HOME`: Personal vehicle pre-flight (`5m` default), uniform & gear loadout, and toggleable home tasks.
+  * `PHASE_01 // MORNING_PROTOCOL`: Morning routine & hygiene (`5m` default).
+* **Custom Stages & One-Tap Scenarios:** Add or remove custom tasks on the fly, adjust durations in 5-minute increments, or switch between **Long Break**, **Express**, and **Reset** presets.
+* **Step-by-Step Reverse Timeline & Clipboard Export:** Visual chronological breakdown from alarm to mission start with one-click `[COPY_BRIEF]` export.
+* **Bilingual (`EN` / `RU`) & Persistent:** Defaults to English with an instant `EN | RU` toggle in the HUD header. All settings, custom tasks, and language preferences auto-save to `localStorage`.
+* **Covert Access:** Reachable directly at `/prep` (or `#/prep`), or discreetly from the main landing page by clicking `MAINT_BLOCK` or `VER_8.0.4.X_STABLE`.
+
+---
+
 ## 🚀 Quick Start & Development
 
 ### Local Development
