@@ -111,7 +111,7 @@ const UI_TEXT: Record<
 > = {
   en: {
     backTitle: 'Return to main page',
-    pageTitle: 'Reverse Mission Prep Calculator',
+    pageTitle: 'Mission Prep',
     copied: 'COPIED TO CLIPBOARD',
     copyBtn: '[COPY_BRIEF // COPY]',
     targetTimeLabel: '[TARGET_TIME // ON-BASE TIME]',
@@ -119,9 +119,9 @@ const UI_TEXT: Record<
     quickSelect: 'Quick select:',
     alarmTitle: 'WAKE UP & ALARM',
     prevDayWarning: '⚠ Previous day',
-    alarmSub: 'Start of morning protocol',
+    alarmSub: 'Morning start',
     prepTitle: 'PREP START',
-    prepSub: 'Gear, loadout & vehicle',
+    prepSub: 'Gear & vehicle',
     departTitle: 'DEPARTURE',
     departSub: (mins) => `Transit: ${mins}m (min 20m)`,
     arrivalTitle: 'BASE ARRIVAL',
@@ -181,7 +181,7 @@ const UI_TEXT: Record<
   },
   ru: {
     backTitle: 'Вернуться на главную страницу',
-    pageTitle: 'Обратный расчёт времени подготовки',
+    pageTitle: 'Подготовка к заданию',
     copied: 'СКОПИРОВАНО В БУФЕР',
     copyBtn: '[COPY_BRIEF // КОПИРОВАТЬ]',
     targetTimeLabel: '[TARGET_TIME // ВРЕМЯ БЫТЬ НА БАЗЕ]',
@@ -189,9 +189,9 @@ const UI_TEXT: Record<
     quickSelect: 'Быстрый выбор:',
     alarmTitle: 'ПОДЪЁМ И БУДИЛЬНИК',
     prevDayWarning: '⚠ Предыдущий день',
-    alarmSub: 'Старт утреннего распорядка',
+    alarmSub: 'Утренний старт',
     prepTitle: 'СТАРТ СБОРОВ',
-    prepSub: 'Одежда, экипировка, машина',
+    prepSub: 'Форма и машина',
     departTitle: 'ВЫЕЗД ИЗ ДОМА',
     departSub: (mins) => `В пути: ${mins} мин (мин. 20)`,
     arrivalTitle: 'ПРИБЫТИЕ НА БАЗУ',
@@ -485,23 +485,23 @@ export default function MissionPrepPage({ onBackToMain }: MissionPrepPageProps) 
                 <div className="text-xs text-brand-secondary">{t.targetTimeDesc}</div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                <div className="relative flex items-center">
-                  <Clock className="w-5 h-5 text-brand-primary absolute left-3 pointer-events-none" />
+              <div className="flex flex-nowrap items-center gap-1.5 sm:gap-3 overflow-x-auto">
+                <div className="relative flex items-center shrink-0">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-brand-primary absolute left-2.5 sm:left-3 pointer-events-none" />
                   <input
                     type="time"
                     value={config.targetTime}
                     onChange={handleTimeChange}
-                    className="bg-[#111111] border-2 border-brand-primary text-brand-primary font-mono text-2xl md:text-3xl font-bold py-1.5 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                    className="bg-[#111111] border-2 border-brand-primary text-brand-primary font-mono text-lg sm:text-2xl md:text-3xl font-bold py-1 sm:py-1.5 pl-8 sm:pl-10 pr-2 sm:pr-3 focus:outline-none focus:ring-2 focus:ring-brand-primary"
                   />
                 </div>
 
-                <div className="flex items-center gap-1 font-mono text-xs">
-                  {[-15, -5, 5, 15].map(delta => (
+                <div className="flex items-center gap-1 font-mono text-[11px] sm:text-xs shrink-0">
+                  {[-30, -5, 5, 30].map(delta => (
                     <button
                       key={delta}
                       onClick={() => adjustTargetTime(delta)}
-                      className="px-2 py-1.5 bg-[#252524] border border-brand-steel hover:border-brand-primary hover:text-brand-primary text-brand-secondary transition-all"
+                      className="px-1.5 sm:px-2 py-1.5 bg-[#252524] border border-brand-steel hover:border-brand-primary hover:text-brand-primary text-brand-secondary transition-all whitespace-nowrap"
                     >
                       {delta > 0 ? `+${delta}` : delta}
                       {t.minShort}
@@ -513,7 +513,7 @@ export default function MissionPrepPage({ onBackToMain }: MissionPrepPageProps) 
 
             <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-brand-steel/30 font-mono text-[11px]">
               <span className="text-brand-steel uppercase mr-1">{t.quickSelect}</span>
-              {['06:00', '06:30', '07:00', '07:15', '07:30', '08:00', '08:30'].map(
+              {['06:00', '12:00', '18:00'].map(
                 timeOpt => (
                   <button
                     key={timeOpt}
