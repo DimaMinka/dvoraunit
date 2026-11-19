@@ -45,6 +45,25 @@ An integrated reverse-time deployment planner designed to calculate exact wake-u
 
 ---
 
+## 🎖 Tactical Patch Requisition Terminal (`/patch`)
+
+A serverless, zero-database ordering terminal built for fast mobile checkout (iPhone Safari) to support DVORA UNIT and local production in the North.
+
+### Key Features
+* **Tactical Media Showcase:** 4-channel optical feed (`RIG`, `ACTION`, `MACRO`, `VIDEO`) with touch-swipe and tap-to-next navigation, optical interference overlay (vignette, scan-beam, channel-switch glitch), image preloading, and a lightweight looping video (`public/patch-video.mp4`).
+* **Smart Loadout & Upsell (`DUAL SET` vs `SINGLE`):**
+  * Choose between a **Single** DVORA patch or a **Dual Set** (DVORA on L-Arm + matching Flag patch on R-Arm) with live per-row and per-set price breakdowns.
+  * Synced 1:1 quantity by default with optional manual override for custom ratios.
+* **Interactive Volume Pricing:**
+  * Automatic tier discounts based on total patch count (`1–49: 18 ₪`, `50–99: 17 ₪`, `100–499: 16 ₪`, `500+: 15 ₪`).
+  * Clicking any tier card immediately sets the minimum quantity needed to unlock that price (splitting evenly across both arms in `DUAL SET` mode).
+* **Zero-Friction Submit & AI-Ready Manifest:**
+  * 1-tap **WhatsApp** requisition with zero mandatory form fields, plus **Email** and **Copy Order** fallbacks on both desktop and mobile sticky checkout bar.
+  * Every order embeds a compact machine-readable payload (`[SYS_MANIFEST: v1|ID:...|DVORA:...|FLAG:...|TOTAL:...|UNIT:...|SUM:...|CUR:ILS]`) for seamless import into future offline/AI order systems.
+* **Bilingual (`EN` / `RU`) & Persistent:** Shares `EN | RU` language state with `/prep` and auto-saves order drafts to `localStorage`. Reachable at `/patch` (or `#/patch`) and via `UNIT_PATCH` in the main header.
+
+---
+
 ## 🚀 Quick Start & Development
 
 ### Local Development
