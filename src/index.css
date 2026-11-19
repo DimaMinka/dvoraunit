@@ -86,4 +86,60 @@ input[type="number"].no-spinner {
   -moz-appearance: textfield;
 }
 
+/* Tactical optical feed overlay for patch photos */
+.tactical-feed-img {
+  filter: contrast(1.04) saturate(0.92);
+}
+
+.tactical-vignette {
+  background: radial-gradient(
+    circle at center,
+    transparent 52%,
+    rgba(10, 12, 10, 0.55) 100%
+  );
+}
+
+@keyframes tacticalScanBeam {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(500%);
+  }
+}
+
+.tactical-scanbeam {
+  height: 22%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(188, 204, 161, 0.08) 50%,
+    transparent
+  );
+  animation: tacticalScanBeam 5.5s linear infinite;
+}
+
+@keyframes channelSwitch {
+  0% {
+    opacity: 0.35;
+    transform: translateX(-3px);
+    filter: brightness(1.35) contrast(1.2);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translateX(2px);
+    filter: brightness(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: none;
+  }
+}
+
+.tactical-channel-switch {
+  animation: channelSwitch 160ms ease-out;
+}
+
+
 

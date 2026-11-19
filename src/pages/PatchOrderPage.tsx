@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   ArrowLeft,
   Shield,
@@ -36,7 +36,7 @@ interface PatchOrderPageProps {
 
 type MediaTab = 'operator' | 'field' | 'closeup' | 'video';
 
-const MEDIA_ORDER: MediaTab[] = ['operator', 'field', 'closeup', 'video'];
+const MEDIA_ORDER: MediaTab[] = ['field', 'operator', 'closeup', 'video'];
 const QUICK_QTYS = [1, 5, 10, 50, 100, 500];
 
 const UI_TEXT: Record<
@@ -166,13 +166,21 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
   const [draft, setDraft] = useState<PatchOrderDraft>(() => loadPatchDraft());
   const [dvoraInput, setDvoraInput] = useState<string>(() => String(loadPatchDraft().dvoraQty));
   const [flagInput, setFlagInput] = useState<string>(() => String(loadPatchDraft().flagQty));
-  const [mediaTab, setMediaTab] = useState<MediaTab>('operator');
+  const [mediaTab, setMediaTab] = useState<MediaTab>('field');
   const [videoAvailable, setVideoAvailable] = useState<boolean>(true);
   const [showAltChannels, setShowAltChannels] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
   const [orderId] = useState<string>(() => generateOrderId());
+  const touchStartX = useRef<number | null>(null);
 
   const t = UI_TEXT[lang];
+
+  useEffect(() => {
+    ['/patch-field.jpg', '/patch-alt.jpg', '/patch-closeup.jpg'].forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   useEffect(() => {
     saveLang(lang);
@@ -195,10 +203,10 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
     [orderMessage, orderId]
   );
 
-  const cycleMedia = () => {
+  const cycleMedia = (dir: 1 | -1 = 1) => {
     setMediaTab((prev) => {
       const idx = MEDIA_ORDER.indexOf(prev);
-      return MEDIA_ORDER[(idx + 1) % MEDIA_ORDER.length];
+      return MEDIA_ORDER[(idx + dir + MEDIA_ORDER.length) % MEDIA_ORDER.length];
     });
   };
 
@@ -302,80 +310,111 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
             <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 border-b-2 border-r-2 border-brand-primary pointer-events-none z-20" />
 
             <div
-              onClick={cycleMedia}
+              onClick={() => cycleMedia(1)}
+              onTouchStart={(e) => {
+                touchStartX.current = e.touches[0].clientX;
+              }}
+              onTouchEnd={(e) => {
+                if (touchStartX.current === null) return;
+                const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+                touchStartX.current = null;
+                if (Math.abs(deltaX) > 40) {
+                  cycleMedia(deltaX < 0 ? 1 : -1);
+                }
+              }}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  cycleMedia();
+                  cycleMedia(1);
                 }
               }}
               className="relative aspect-[4/3] w-full overflow-hidden bg-[#101010] flex items-center justify-center cursor-pointer select-none group"
             >
-              {mediaTab === 'video' && (
-                <>
-                  {videoAvailable ? (
-                    <video
-                      src="/patch-video.mp4"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      poster="/logo.png"
-                      onError={() => setVideoAvailable(false)}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center relative overflow-hidden grid-backdrop">
-                      {/* HUD Reticle */}
-                      <div className="absolute inset-4 border border-brand-primary/15 pointer-events-none" />
-                      <div className="absolute top-1/2 left-0 right-0 h-px bg-brand-primary/10 pointer-events-none" />
-                      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-brand-primary/10 pointer-events-none" />
-
-                      <img
-                        src="/logo.png"
-                        alt="DVORA UNIT"
-                        className="w-28 h-28 object-contain tactical-glitch"
+              <div
+                key={mediaTab}
+                className="w-full h-full flex items-center justify-center tactical-channel-switch"
+              >
+                {mediaTab === 'video' && (
+                  <>
+                    {videoAvailable ? (
+                      <video
+                        src="/patch-video.mp4"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        poster="/logo.png"
+                        onError={() => setVideoAvailable(false)}
+                        className="w-full h-full object-cover"
                       />
-                      <div className="mt-3 font-mono text-xs text-brand-primary tracking-widest uppercase">
-                        {t.videoStandby}
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center relative overflow-hidden grid-backdrop">
+                        {/* HUD Reticle */}
+                        <div className="absolute inset-4 border border-brand-primary/15 pointer-events-none" />
+                        <div className="absolute top-1/2 left-0 right-0 h-px bg-brand-primary/10 pointer-events-none" />
+                        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-brand-primary/10 pointer-events-none" />
+
+                        <img
+                          src="/logo.png"
+                          alt="DVORA UNIT"
+                          className="w-28 h-28 object-contain tactical-glitch"
+                        />
+                        <div className="mt-3 font-mono text-xs text-brand-primary tracking-widest uppercase">
+                          {t.videoStandby}
+                        </div>
+                        <p className="mt-1 font-mono text-[10px] text-brand-steel max-w-xs">
+                          {t.videoStandbySub}
+                        </p>
                       </div>
-                      <p className="mt-1 font-mono text-[10px] text-brand-steel max-w-xs">
-                        {t.videoStandbySub}
-                      </p>
-                    </div>
-                  )}
-                </>
-              )}
+                    )}
+                  </>
+                )}
 
-              {mediaTab === 'operator' && (
-                <img
-                  src="/patch-alt.jpg"
-                  alt="DVORA Patch in Field Action"
-                  className="w-full h-full object-cover"
-                />
-              )}
+                {mediaTab === 'field' && (
+                  <img
+                    src="/patch-field.jpg"
+                    alt="DVORA Patch on Tactical Vest"
+                    className="w-full h-full object-cover tactical-feed-img"
+                  />
+                )}
 
-              {mediaTab === 'field' && (
-                <img
-                  src="/patch-field.jpg"
-                  alt="DVORA Patch on Tactical Vest"
-                  className="w-full h-full object-cover"
-                />
-              )}
+                {mediaTab === 'operator' && (
+                  <img
+                    src="/patch-alt.jpg"
+                    alt="DVORA Patch in Field Action"
+                    className="w-full h-full object-cover tactical-feed-img"
+                  />
+                )}
 
-              {mediaTab === 'closeup' && (
-                <img
-                  src="/patch-closeup.jpg"
-                  alt="DVORA Patch Close-up"
-                  className="w-full h-full object-cover"
-                />
+                {mediaTab === 'closeup' && (
+                  <img
+                    src="/patch-closeup.jpg"
+                    alt="DVORA Patch Close-up"
+                    className="w-full h-full object-cover tactical-feed-img"
+                  />
+                )}
+              </div>
+
+              {/* Tactical Optical Interference Overlay (dimmed on macro closeup) */}
+              {mediaTab !== 'video' && (
+                <div
+                  className={`absolute inset-0 pointer-events-none transition-opacity duration-200 ${
+                    mediaTab === 'closeup' ? 'opacity-40' : 'opacity-100'
+                  }`}
+                >
+                  <div className="absolute inset-0 tactical-vignette" />
+                  <div className="absolute inset-x-0 top-0 tactical-scanbeam" />
+                </div>
               )}
 
               {/* HUD Overlay Tag */}
-              <div className="absolute top-2 left-2 bg-black/75 border border-brand-primary/40 px-2 py-0.5 font-mono text-[10px] text-brand-primary">
-                CAM_0{MEDIA_ORDER.indexOf(mediaTab) + 1} // {mediaTab.toUpperCase()}
+              <div className="absolute top-2 left-2 bg-black/75 border border-brand-primary/40 px-2 py-0.5 font-mono text-[10px] text-brand-primary flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse" />
+                <span>
+                  CAM_0{MEDIA_ORDER.indexOf(mediaTab) + 1} // {mediaTab.toUpperCase()}
+                </span>
               </div>
 
               {/* Frame Counter & Tap Hint */}
@@ -388,17 +427,6 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
           {/* Media Switcher Tabs */}
           <div className="grid grid-cols-4 gap-1.5 font-mono text-[10px] sm:text-[11px]">
             <button
-              onClick={() => setMediaTab('operator')}
-              className={`flex items-center justify-center gap-1 py-2 border transition-all cursor-pointer ${
-                mediaTab === 'operator'
-                  ? 'border-brand-primary bg-brand-primary/15 text-brand-primary font-bold'
-                  : 'border-brand-steel/40 bg-[#1A1A19] text-brand-steel hover:text-white'
-              }`}
-            >
-              <Shield className="w-3 h-3 shrink-0" />
-              <span className="truncate">{t.tabOperator}</span>
-            </button>
-            <button
               onClick={() => setMediaTab('field')}
               className={`flex items-center justify-center gap-1 py-2 border transition-all cursor-pointer ${
                 mediaTab === 'field'
@@ -408,6 +436,17 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
             >
               <Camera className="w-3 h-3 shrink-0" />
               <span className="truncate">{t.tabField}</span>
+            </button>
+            <button
+              onClick={() => setMediaTab('operator')}
+              className={`flex items-center justify-center gap-1 py-2 border transition-all cursor-pointer ${
+                mediaTab === 'operator'
+                  ? 'border-brand-primary bg-brand-primary/15 text-brand-primary font-bold'
+                  : 'border-brand-steel/40 bg-[#1A1A19] text-brand-steel hover:text-white'
+              }`}
+            >
+              <Shield className="w-3 h-3 shrink-0" />
+              <span className="truncate">{t.tabOperator}</span>
             </button>
             <button
               onClick={() => setMediaTab('closeup')}
