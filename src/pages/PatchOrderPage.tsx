@@ -57,14 +57,19 @@ const UI_TEXT: Record<
     loadoutTitle: string;
     dualTitle: string;
     dualBadge: string;
+    dualPriceTag: string;
     dualDesc: string;
     singleTitle: string;
+    singlePriceTag: string;
     singleDesc: string;
     qtyTitle: string;
     dvoraLabel: string;
     flagLabel: string;
     syncLabel: string;
     tierTitle: string;
+    dualTierHint: string;
+    perPcShort: string;
+    perSetShort: string;
     pcs: string;
     nextTierPrefix: string;
     nextTierMid: string;
@@ -97,14 +102,19 @@ const UI_TEXT: Record<
     loadoutTitle: '01 // SELECT LOADOUT',
     dualTitle: 'DUAL SET // BOTH ARMS',
     dualBadge: 'RECOMMENDED',
+    dualPriceTag: '×2 PATCHES',
     dualDesc: 'DVORA (L-Arm) + FLAG (R-Arm) in matching style. Supports project development.',
     singleTitle: 'SINGLE // 1 ARM',
+    singlePriceTag: '1 PATCH',
     singleDesc: 'DVORA UNIT patch only.',
     qtyTitle: '02 // QUANTITY & VOLUME TIERS',
     dvoraLabel: 'DVORA UNIT',
     flagLabel: 'FLAG PATCH',
     syncLabel: 'Sync 1:1',
     tierTitle: 'VOLUME PRICING',
+    dualTierHint: 'SET = 2 PATCHES (×2)',
+    perPcShort: '/pc',
+    perSetShort: 'set',
     pcs: 'pcs',
     nextTierPrefix: 'Add',
     nextTierMid: 'more pcs to unlock',
@@ -136,14 +146,19 @@ const UI_TEXT: Record<
     loadoutTitle: '01 // ВЫБОР КОМПЛЕКТА',
     dualTitle: 'ПОЛНЫЙ СЕТ // ОБА ПЛЕЧА',
     dualBadge: 'РЕКОМЕНДУЕМ',
+    dualPriceTag: '×2 ПАТЧА',
     dualDesc: 'DVORA (левое) + ФЛАГ (правое) в одном стиле. Прямая поддержка проекта.',
     singleTitle: 'БАЗОВЫЙ // 1 ПЛЕЧО',
+    singlePriceTag: '1 ПАТЧ',
     singleDesc: 'Только патч DVORA UNIT.',
     qtyTitle: '02 // КОЛИЧЕСТВО И СКИДКА',
     dvoraLabel: 'ПАТЧ DVORA',
     flagLabel: 'ПАТЧ ФЛАГ',
     syncLabel: '1:1 с Дворой',
     tierTitle: 'СЕТКА ЦЕН',
+    dualTierHint: 'В СЕТЕ 2 ПАТЧА (×2)',
+    perPcShort: '/шт',
+    perSetShort: 'сет',
     pcs: 'шт.',
     nextTierPrefix: 'Добавь ещё',
     nextTierMid: 'шт. для цены',
@@ -512,13 +527,18 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
               >
                 <div className="flex items-center justify-between gap-2 mb-1.5">
                   <span className="font-display font-bold text-sm text-brand-primary flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5" />
+                    <Sparkles className="w-3.5 h-3.5 shrink-0" />
                     {t.dualTitle}
                   </span>
                 </div>
-                <span className="inline-block font-mono text-[9px] bg-brand-primary text-black font-bold px-1.5 py-0.5 mb-2">
-                  {t.dualBadge}
-                </span>
+                <div className="flex flex-wrap items-center gap-1.5 mb-2">
+                  <span className="inline-block font-mono text-[9px] bg-brand-primary text-black font-bold px-1.5 py-0.5">
+                    {t.dualBadge}
+                  </span>
+                  <span className="inline-block font-mono text-[10px] border border-brand-primary/50 bg-[#121212] text-brand-primary font-bold px-1.5 py-0.5">
+                    {t.dualPriceTag} · {calc.unitPrice * 2} {CURRENCY_SYMBOL}/{t.perSetShort}
+                  </span>
+                </div>
                 <p className="text-xs text-brand-secondary leading-relaxed">
                   {t.dualDesc}
                 </p>
@@ -533,9 +553,14 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
                     : 'border-brand-steel/40 bg-[#141414] hover:border-brand-steel'
                 }`}
               >
-                <div className="font-display font-bold text-sm text-white flex items-center gap-1.5 mb-2">
-                  <Shield className="w-3.5 h-3.5 text-brand-steel" />
+                <div className="font-display font-bold text-sm text-white flex items-center gap-1.5 mb-1.5">
+                  <Shield className="w-3.5 h-3.5 text-brand-steel shrink-0" />
                   {t.singleTitle}
+                </div>
+                <div className="mb-2">
+                  <span className="inline-block font-mono text-[10px] border border-brand-steel/50 bg-[#121212] text-brand-secondary font-bold px-1.5 py-0.5">
+                    {t.singlePriceTag} · {calc.unitPrice} {CURRENCY_SYMBOL}{t.perPcShort}
+                  </span>
                 </div>
                 <p className="text-xs text-brand-secondary leading-relaxed">
                   {t.singleDesc}
@@ -552,9 +577,14 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
 
             {/* DVORA Qty Row */}
             <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-              <span className="font-mono text-xs font-bold text-white">
-                {t.dvoraLabel}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-xs font-bold text-white">
+                  {t.dvoraLabel}
+                </span>
+                <span className="font-mono text-[11px] text-brand-secondary">
+                  {(calc.dvoraQty * calc.unitPrice).toLocaleString()} {CURRENCY_SYMBOL}
+                </span>
+              </div>
               <div className="flex items-center border border-brand-steel/50 bg-[#121212]">
                 <button
                   onClick={() => updateDvoraQty(draft.dvoraQty - 1)}
@@ -615,9 +645,12 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
             {/* FLAG Qty Row (only in Dual mode) */}
             {draft.mode === 'dual' && (
               <div className="pt-3 border-t border-brand-steel/30 flex flex-wrap items-center justify-between gap-3 mb-4">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-mono text-xs font-bold text-brand-primary">
                     {t.flagLabel}
+                  </span>
+                  <span className="font-mono text-[11px] text-brand-primary/90">
+                    +{(calc.flagQty * calc.unitPrice).toLocaleString()} {CURRENCY_SYMBOL}
                   </span>
                   <button
                     onClick={() =>
@@ -684,6 +717,12 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
 
             {/* Volume Pricing Tiers Bar */}
             <div className="bg-[#141414] border border-brand-steel/30 p-3">
+              {draft.mode === 'dual' && calc.flagQty > 0 && (
+                <div className="flex items-center justify-between font-mono text-[10px] text-brand-primary/90 mb-2 pb-1.5 border-b border-brand-steel/20">
+                  <span>{t.tierTitle}</span>
+                  <span className="font-bold">{t.dualTierHint}</span>
+                </div>
+              )}
               <div className="grid grid-cols-4 gap-1.5 text-center font-mono text-[10px] mb-2">
                 {PRICE_TIERS.map((tier) => {
                   const isActive = calc.unitPrice === tier.unitPrice;
@@ -702,7 +741,13 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
                       <div>{rangeLabel}</div>
                       <div className="text-xs mt-0.5">
                         {tier.unitPrice} {CURRENCY_SYMBOL}
+                        <span className="text-[9px] opacity-80">{t.perPcShort}</span>
                       </div>
+                      {draft.mode === 'dual' && (
+                        <div className="text-[9px] mt-0.5 opacity-85">
+                          {tier.unitPrice * 2} {CURRENCY_SYMBOL} {t.perSetShort}
+                        </div>
+                      )}
                     </div>
                   );
                 })}
@@ -735,8 +780,14 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
             <div className="flex items-end justify-between mb-4">
               <div>
                 <div className="font-mono text-xs text-brand-steel">
-                  {t.totalLabel} ({calc.totalQty} {t.pcs} × {calc.unitPrice}{' '}
-                  {CURRENCY_SYMBOL} {t.unitLabel})
+                  {t.totalLabel}:{' '}
+                  <span className="text-brand-secondary">
+                    {calc.totalQty} {t.pcs}
+                    {draft.mode === 'dual' && calc.flagQty > 0
+                      ? ` (${calc.dvoraQty}+${calc.flagQty})`
+                      : ''}
+                  </span>{' '}
+                  × {calc.unitPrice} {CURRENCY_SYMBOL} {t.unitLabel}
                 </div>
                 <div className="font-display text-3xl font-bold text-brand-primary">
                   {calc.totalPrice.toLocaleString()} {CURRENCY_SYMBOL}
@@ -809,7 +860,13 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
         <div className="flex items-center justify-between gap-3">
           <div>
             <div className="font-mono text-[10px] text-brand-steel">
-              {calc.totalQty} {t.pcs} × {calc.unitPrice} {CURRENCY_SYMBOL}
+              <span className="text-brand-secondary">
+                {calc.totalQty} {t.pcs}
+                {draft.mode === 'dual' && calc.flagQty > 0
+                  ? ` (${calc.dvoraQty}+${calc.flagQty})`
+                  : ''}
+              </span>{' '}
+              × {calc.unitPrice} {CURRENCY_SYMBOL}
             </div>
             <div className="font-display text-xl font-bold text-brand-primary leading-tight">
               {calc.totalPrice.toLocaleString()} {CURRENCY_SYMBOL}
