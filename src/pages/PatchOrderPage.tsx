@@ -768,13 +768,15 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
                       }`}
                     >
                       <div>{rangeLabel}</div>
-                      <div className="text-xs mt-0.5">
-                        {tier.unitPrice} {CURRENCY_SYMBOL}
-                        <span className="text-[9px] opacity-80">{t.perPcShort}</span>
-                      </div>
-                      {draft.mode === 'dual' && (
-                        <div className="text-[9px] mt-0.5 opacity-85">
-                          {tier.unitPrice * 2} {CURRENCY_SYMBOL} {t.perSetShort}
+                      {draft.mode === 'dual' ? (
+                        <div className="text-xs mt-0.5">
+                          {tier.unitPrice * 2} {CURRENCY_SYMBOL}
+                          <span className="text-[9px] opacity-80">/{t.perSetShort}</span>
+                        </div>
+                      ) : (
+                        <div className="text-xs mt-0.5">
+                          {tier.unitPrice} {CURRENCY_SYMBOL}
+                          <span className="text-[9px] opacity-80">{t.perPcShort}</span>
                         </div>
                       )}
                     </button>
