@@ -254,6 +254,22 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
     }));
   };
 
+  const applyTierMinQty = (minQty: number) => {
+    if (draft.mode === 'dual') {
+      const perSide = Math.max(1, Math.ceil(minQty / 2));
+      setDvoraInput(String(perSide));
+      setFlagInput(String(perSide));
+      setDraft((prev) => ({
+        ...prev,
+        dvoraQty: perSide,
+        flagQty: perSide,
+        syncFlag: true,
+      }));
+    } else {
+      updateDvoraQty(minQty);
+    }
+  };
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(orderMessage);
@@ -741,12 +757,14 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
                     ? `${tier.minQty}-${tier.maxQty}`
                     : `${tier.minQty}+`;
                   return (
-                    <div
+                    <button
+                      type="button"
                       key={tier.minQty}
-                      className={`py-1.5 px-1 border ${
+                      onClick={() => applyTierMinQty(tier.minQty)}
+                      className={`py-1.5 px-1 border transition-colors cursor-pointer ${
                         isActive
                           ? 'border-brand-primary bg-brand-primary/15 text-brand-primary font-bold'
-                          : 'border-brand-steel/20 text-brand-steel'
+                          : 'border-brand-steel/20 text-brand-steel hover:border-brand-primary/60 hover:text-white'
                       }`}
                     >
                       <div>{rangeLabel}</div>
@@ -759,7 +777,7 @@ export default function PatchOrderPage({ onBackToMain }: PatchOrderPageProps) {
                           {tier.unitPrice * 2} {CURRENCY_SYMBOL} {t.perSetShort}
                         </div>
                       )}
-                    </div>
+                    </button>
                   );
                 })}
               </div>
