@@ -5,6 +5,7 @@ import {
   Satellite 
 } from "lucide-react";
 import MissionPrepPage from "./pages/MissionPrepPage";
+import PatchOrderPage from "./pages/PatchOrderPage";
 
 export default function App() {
   const [sysTime, setSysTime] = useState("");
@@ -16,6 +17,9 @@ export default function App() {
     if (path.includes("/prep") || hash.includes("/prep")) {
       return "/prep";
     }
+    if (path.includes("/patch") || hash.includes("/patch")) {
+      return "/patch";
+    }
     return "/";
   });
 
@@ -26,6 +30,8 @@ export default function App() {
       const hash = window.location.hash;
       if (path.includes("/prep") || hash.includes("/prep")) {
         setCurrentPath("/prep");
+      } else if (path.includes("/patch") || hash.includes("/patch")) {
+        setCurrentPath("/patch");
       } else {
         setCurrentPath("/");
       }
@@ -65,6 +71,11 @@ export default function App() {
     return <MissionPrepPage onBackToMain={() => navigateTo("/")} />;
   }
 
+  // If on /patch, render PatchOrderPage
+  if (currentPath === "/patch") {
+    return <PatchOrderPage onBackToMain={() => navigateTo("/")} />;
+  }
+
   return (
     <div id="tactical_ops_interface" className="scanlines grid-backdrop min-h-screen bg-[#121212] flex flex-col justify-between text-[#e5e2e1] relative selection:bg-brand-primary selection:text-black">
       
@@ -91,6 +102,14 @@ export default function App() {
               SATELLITE: ORB_09
             </span>
           </div>
+
+          <button
+            onClick={() => navigateTo("/patch")}
+            title="Order DVORA UNIT Patches"
+            className="bg-brand-primary/15 border border-brand-primary/60 px-2 py-0.5 text-brand-primary uppercase text-[10px] font-bold cursor-pointer hover:bg-brand-primary hover:text-black transition-all"
+          >
+            UNIT_PATCH
+          </button>
 
           <button
             onClick={() => navigateTo("/prep")}
