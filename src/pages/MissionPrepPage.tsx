@@ -672,9 +672,8 @@ export default function MissionPrepPage({ onBackToMain }: MissionPrepPageProps) 
 
               <button
                 onClick={() => setShowAddModal(true)}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#1e1e1e] border border-brand-primary/60 text-brand-primary text-xs font-mono hover:bg-brand-primary hover:text-black transition-all"
+                className="inline-flex items-center px-2.5 py-1 bg-[#1e1e1e] border border-brand-primary/60 text-brand-primary text-xs font-mono hover:bg-brand-primary hover:text-black transition-all"
               >
-                <Plus className="w-3.5 h-3.5" />
                 <span>{t.addStageBtn}</span>
               </button>
             </div>
